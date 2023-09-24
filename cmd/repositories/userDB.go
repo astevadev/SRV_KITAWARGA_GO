@@ -2,8 +2,8 @@ package repositories
 
 import (
 	"database/sql"
+	"kitawarga/cmd/config"
 	"kitawarga/cmd/models"
-	"kitawarga/cmd/storage"
 	"time"
 )
 
@@ -11,7 +11,7 @@ var rows *sql.Rows
 
 func GetUsers(users models.Users) (models.Users, error) {
 	sqlStatement := "SELECT id, name, email, password, createddate, updateddate FROM USERS"
-	rows, err := storage.DB.Query(sqlStatement)
+	rows, err := config.DB.Query(sqlStatement)
 	if err != nil {
 		return users, err
 	}
@@ -31,7 +31,7 @@ func GetUsers(users models.Users) (models.Users, error) {
 
 func CreateUser(user models.User) (models.User, error) {
 	sqlStatement := "INSERT INTO USERS (name, email, password, createddate) VALUES ($1, $2, $3, $4) RETURNING id"
-	err := storage.DB.QueryRow(sqlStatement, user.Name, user.Email, user.Password, time.Now()).Scan(&user.Id)
+	err := config.DB.QueryRow(sqlStatement, user.Name, user.Email, user.Password, time.Now()).Scan(&user.Id)
 	if err != nil {
 		return user, err
 	}
