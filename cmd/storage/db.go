@@ -10,7 +10,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-var db *sql.DB
+var DB *sql.DB
 
 func InitDB() *sql.DB {
 	err := godotenv.Load()
@@ -24,17 +24,17 @@ func InitDB() *sql.DB {
 	dbPass := os.Getenv("DB_PASSWORD")
 	dbName := os.Getenv("DB_NAME")
 
-	db, err = sql.Open("postgres", fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable", dbHost, dbUser, dbPass, dbName, dbPort))
+	DB, err = sql.Open("postgres", fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable", dbHost, dbUser, dbPass, dbName, dbPort))
 
 	if err != nil {
 		panic(err.Error())
 	}
 
-	err = db.Ping()
+	err = DB.Ping()
 	if err != nil {
 		panic(err.Error())
 	}
 
 	fmt.Println("Successfully connected to database")
-	return db
+	return DB
 }
